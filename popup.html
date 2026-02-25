@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bringetto Inbox Blaster</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e0e;
+      --surface: #1a1a1a;
+      --surface2: #242424;
+      --border: #2e2e2e;
+      --accent: #ff4d00;
+      --accent2: #ff8c42;
+      --text: #f0f0f0;
+      --muted: #888;
+      --success: #2ecc71;
+      --warning: #f39c12;
+    }
+
+    body {
+      width: 320px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #1a0800, #0e0e0e);
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 100px; height: 100px;
+      background: radial-gradient(circle, rgba(255,77,0,0.15), transparent 70%);
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 2px;
+    }
+    .broom-icon {
+      font-size: 28px;
+      filter: drop-shadow(0 0 8px rgba(255,77,0,0.6));
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-4px) rotate(5deg); }
+    }
+    .title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1.5px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+    .subtitle {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-left: 38px;
+    }
+
+    /* Content */
+    .content { padding: 16px; }
+
+    /* Mode selector */
+    .mode-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .mode-tab {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .mode-tab:hover { border-color: var(--accent); color: var(--text); }
+    .mode-tab.active {
+      background: rgba(255,77,0,0.12);
+      border-color: var(--accent);
+      color: var(--accent2);
+    }
+    .mode-tab .tab-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+
+    /* Days input */
+    .days-config {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+    }
+    .days-config.visible { display: flex; }
+    .days-config label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .days-input {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 4px 8px;
+      width: 64px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      text-align: center;
+    }
+    .days-input:focus { outline: none; border-color: var(--accent); }
+
+    /* Blast button */
+    .blast-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--accent), #cc3a00);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(255,77,0,0.3);
+    }
+    .blast-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(255,77,0,0.45);
+    }
+    .blast-btn:active:not(:disabled) { transform: translateY(0); }
+    .blast-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .blast-btn.running {
+      background: linear-gradient(135deg, #333, #222);
+      box-shadow: none;
+    }
+
+    /* Stop button */
+    .stop-btn {
+      width: 100%;
+      padding: 8px;
+      background: transparent;
+      border: 1px solid #c0392b;
+      border-radius: 8px;
+      color: #e74c3c;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      display: none;
+      transition: all 0.2s;
+    }
+    .stop-btn:hover { background: rgba(231,76,60,0.1); }
+    .stop-btn.visible { display: block; }
+
+    /* Progress section */
+    .progress-section {
+      margin-top: 16px;
+      display: none;
+    }
+    .progress-section.visible { display: block; }
+
+    .progress-bar-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      height: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 20px;
+      width: 0%;
+      transition: width 0.4s ease;
+      position: relative;
+    }
+    .progress-bar-fill::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 20px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 20px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+    .stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      color: var(--accent2);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 9px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* Status log */
+    .status-log {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11px;
+      color: var(--muted);
+      min-height: 32px;
+      line-height: 1.5;
+    }
+    .status-log.success { color: var(--success); border-color: rgba(46,204,113,0.3); }
+    .status-log.error { color: #e74c3c; border-color: rgba(231,76,60,0.3); }
+    .status-log.running { color: var(--accent2); }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 14px 0;
+    }
+
+    /* Warning */
+    .gmail-warning {
+      display: none;
+      background: rgba(243,156,18,0.1);
+      border: 1px solid rgba(243,156,18,0.3);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: var(--warning);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .gmail-warning.visible { display: block; }
+
+    /* Pulse animation for running */
+    @keyframes pulse-border {
+      0%, 100% { border-color: var(--border); }
+      50% { border-color: rgba(255,77,0,0.4); }
+    }
+    .running-pulse { animation: pulse-border 1.5s ease-in-out infinite; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-top">
+      <span class="broom-icon">🧹</span>
+      <div>
+        <div class="title">Bringetto Inbox Blaster</div>
+      </div>
+    </div>
+    <div class="subtitle">Gmail Bulk Archiver by Bringetto</div>
+  </div>
+
+  <div class="content">
+    <!-- Gmail warning -->
+    <div class="gmail-warning" id="gmailWarning">
+      ⚠️ Please open Gmail first,<br>then click the extension icon again.
+    </div>
+
+    <!-- Main UI -->
+    <div id="mainUI">
+      <div class="mode-label">Archive Mode</div>
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="unstarred">
+          <span class="tab-icon">⭐</span>
+          Unstarred
+        </button>
+        <button class="mode-tab" data-mode="older">
+          <span class="tab-icon">📅</span>
+          Older Than
+        </button>
+      </div>
+
+      <div class="days-config" id="daysConfig">
+        <label>Archive emails older than</label>
+        <input type="number" class="days-input" id="daysInput" value="30" min="1" max="3650" />
+        <span style="font-size:12px;color:var(--muted)">days</span>
+      </div>
+
+      <button class="blast-btn" id="blastBtn">💥 BLAST IT</button>
+      <button class="stop-btn" id="stopBtn">⏹ Stop Archiving</button>
+
+      <div class="progress-section" id="progressSection">
+        <hr class="divider" />
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-value" id="statArchived">0</div>
+            <div class="stat-label">Archived</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="statRounds">0</div>
+            <div class="stat-label">Rounds</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="statRate">—</div>
+            <div class="stat-label">Per/Round</div>
+          </div>
+        </div>
+        <div class="status-log" id="statusLog">Initializing...</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
