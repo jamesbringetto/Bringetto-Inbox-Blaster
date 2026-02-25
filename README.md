@@ -6,11 +6,27 @@ Is your Gmail inbox a graveyard of newsletters, notifications, and emails you'll
 
 Built by a real person who had 4,869 unread emails and got tired of it.
 
+![Bringetto Inbox Blaster — Hero](screenshots/shot1_hero.png)
+
 ## How It Works
 
 Open Gmail, click the extension icon in your Chrome toolbar, choose your archive mode, and hit **BLAST IT**. The extension automatically works through your inbox in rounds — selecting unstarred or old messages, archiving them in bulk, and moving on to the next batch. A live progress tracker shows you exactly how many messages have been blasted into the archive.
 
 No accounts. No logins. No servers. Everything runs entirely in your browser.
+
+## Screenshots
+
+### Live Progress Tracking
+![Live progress — 3,014 emails archived across 62 rounds](screenshots/shot2_progress.png)
+
+### Inbox Zero
+![Inbox Zero — 6,202 emails archived in 4 minutes](screenshots/shot3_done.png)
+
+### Two Archive Modes
+![Two ways to blast clean — Unstarred and Older Than modes](screenshots/shot4_modes.png)
+
+### 100% Private
+![100% Private — Zero data sent, runs entirely in your browser](screenshots/shot5_privacy.png)
 
 ## Features
 
