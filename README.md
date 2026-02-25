@@ -1,4 +1,9 @@
 # Bringetto Inbox Blaster
+Blast your Gmail inbox clean. Bulk archive unstarred messages or old emails in one click — with a real-time progress tracker.
+
+## Demo
+
+![Bringetto Inbox Blaster Demo](assets/demo.gif)
 
 **The fastest way to reach Inbox Zero.**
 
