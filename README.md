@@ -1,6 +1,12 @@
 # Bringetto Inbox Blaster
 Blast your Gmail inbox clean. Bulk archive unstarred messages or old emails in one click — with a real-time progress tracker.
 
+## Download & Install
+
+**[Download Bringetto-Inbox-Blaster.zip](Bringetto-Inbox-Blaster.zip)** — then follow the [Installation Guide](INSTALL.md) for step-by-step instructions for **Windows** and **macOS**.
+
+> Works with Google Chrome on Windows 10/11 and macOS. No Chrome Web Store required.
+
 ## Demo
 
 ![Bringetto Inbox Blaster Demo](assets/demo.gif)
@@ -64,6 +70,17 @@ No accounts. No logins. No servers. Everything runs entirely in your browser.
 - 100% local — no data sent to any server, no account required
 - Works automatically through thousands of emails across multiple rounds
 - Starred messages are always protected and never archived
+
+## Installation
+
+See the full [Installation Guide](INSTALL.md) for step-by-step instructions for Windows and macOS.
+
+**Quick summary:**
+1. [Download the ZIP](Bringetto-Inbox-Blaster.zip) and extract it to a permanent folder.
+2. Open Chrome and go to `chrome://extensions`.
+3. Enable **Developer mode** (top-right toggle).
+4. Click **Load unpacked** and select the extracted folder.
+5. Pin the extension to your toolbar and open Gmail.
 
 ## Privacy
 
